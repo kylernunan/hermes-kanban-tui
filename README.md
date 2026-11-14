@@ -34,7 +34,7 @@ From a checkout, without installing anything:
     cd hermes-kanban-tui
     ./kanban-tui --where
 
-Requires Python 3.9+ with `curses` (present on Linux and macOS; Windows needs
+Requires Python 3.10+ with `curses` (present on Linux and macOS; Windows needs
 `windows-curses`, and the pane-title and mouse features assume a Unix terminal).
 It reads the board the Hermes CLI reads: `~/.hermes/kanban.db`, `HERMES_HOME`,
 `HERMES_KANBAN_HOME`, or `--db`, in that order of specificity. `--where` prints

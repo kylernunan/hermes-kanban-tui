@@ -13,11 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest]
-        python: ["3.9", "3.11", "3.13", "3.14"]
-        exclude:
-          # 3.9 is not on every macOS runner image; Linux covers it.
-          - os: macos-latest
-            python: "3.9"
+        python: ["3.10", "3.11", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
