@@ -40,8 +40,13 @@ From a checkout, without installing anything:
 Requires Python 3.10+. `curses` ships with Python on Linux and macOS; on Windows
 pip pulls in `windows-curses` for you, and if it is ever missing the interactive
 view says so instead of crashing while `--print`, `--json` and `--where` keep
-working. The interactive view is only tested on Linux and macOS. The pane-title
-and mouse features assume a Unix terminal.
+working.
+
+CI runs the full 129-test suite on Linux, macOS and Windows (`windows-latest`,
+Python 3.14), plus a wheel-install job and the snapshot modes on Windows. What is
+still untested on Windows is the interactive curses view itself: nothing has driven
+it in a real Windows console, so treat that as unproven rather than supported. The
+pane-title and mouse features assume a Unix terminal either way.
 It reads the board the Hermes CLI reads: `~/.hermes/kanban.db`, `HERMES_HOME`,
 `HERMES_KANBAN_HOME`, or `--db`, in that order of specificity. `--where` prints
 exactly what it resolved before you look at a blank screen.
