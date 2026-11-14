@@ -878,11 +878,11 @@ class TestGoldenFrame(FixtureCase):
         path = os.path.join(GOLDEN_DIR, name)
         if os.environ.get("KANBAN_TUI_UPDATE_GOLDEN"):
             os.makedirs(GOLDEN_DIR, exist_ok=True)
-            with open(path, "w") as fh:
+            with open(path, "w", encoding="utf-8") as fh:
                 fh.write(text + "\n")
             return text
         self.assertTrue(os.path.exists(path), "missing golden %s; regenerate with KANBAN_TUI_UPDATE_GOLDEN=1" % name)
-        with open(path) as fh:
+        with open(path, encoding="utf-8") as fh:
             expected = fh.read().rstrip("\n")
         self.assertEqual(text, expected, "layout drift in %s" % name)
         return text
@@ -1460,6 +1460,20 @@ class TestCli(FixtureCase):
         self.assertIn("kanban_tui.py", command)
         self.assertIn("--board crew", command)
         self.assertIn("exec bash -l", command)
+
+    def test_print_survives_an_ascii_stdout(self):
+        # Windows pipes use the locale encoding, so a card with an emoji once
+        # killed --print with UnicodeEncodeError before the output was forced
+        # to UTF-8. PYTHONIOENCODING=ascii reproduces that on any platform.
+        res = subprocess.run(
+            [sys.executable, os.path.join(HERE, "kanban_tui.py"),
+             "--db", self.db, "--print", "110x24"],
+            capture_output=True, text=True, timeout=60,
+            env=dict(os.environ, TERM="xterm-256color", PYTHONIOENCODING="ascii"),
+        )
+        self.assertEqual(res.returncode, 0, res.stderr)
+        self.assertIn("KANBAN", res.stdout)
+        self.assertNotIn("UnicodeEncodeError", res.stderr)
 
     def test_snapshot_modes_work_without_curses(self):
         # Windows ships no curses; pip installs windows-curses, but if it is

@@ -42,7 +42,7 @@ NO_CURSES = (
     "--print, --json, --where and --version work without curses."
 )
 
-VERSION = "1.0.1"
+VERSION = "1.0.2"
 SOURCE_ID = "hermes-kanban-tui"
 
 STATUS_ORDER = (
@@ -274,7 +274,9 @@ class KanbanStore:
 
     @property
     def board_label(self):
-        parts = self.db_path.split(os.sep)
+        # A board path can arrive with either separator (a --db typed on Windows
+        # with forward slashes, or a POSIX path in a test), so split on both.
+        parts = re.split(r"[\\/]", self.db_path)
         if "boards" in parts:
             i = len(parts) - 2
             if parts[max(0, i - 1)] == "boards":
@@ -2271,6 +2273,21 @@ def build_parser():
     return p
 
 
+def force_utf8_stdio():
+    """Cards carry emoji and CJK; a cp1252 pipe would turn that into a crash.
+
+    Windows pipes and files use the locale encoding, so `--print` died with
+    UnicodeEncodeError there. The console itself is handled by Python, but the
+    redirect case needs this. Replace rather than raise if even UTF-8 cannot
+    represent a character.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8", errors="replace")
+        except (AttributeError, ValueError, OSError):
+            pass
+
+
 def _terminfo_state(name):
     """True/False, or None when infocmp is not installed to ask."""
     if not shutil.which("infocmp"):
@@ -2335,6 +2352,7 @@ def open_in_pane(forward):
 
 
 def main(argv=None):
+    force_utf8_stdio()
     argv = list(sys.argv[1:] if argv is None else argv)
     pane = "--pane" in argv
     forward = [a for a in argv if a != "--pane"]

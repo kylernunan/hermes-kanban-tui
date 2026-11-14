@@ -3,6 +3,25 @@
 Versions follow semver: a change to the JSON contract or the keyboard map is a
 minor bump, a read-only guarantee change would be major.
 
+## 1.0.2
+
+- Windows: `--print` and `--json` no longer die with `UnicodeEncodeError` when
+  output goes to a pipe or file under a non-UTF-8 locale. A card with an emoji
+  was enough to crash it. Output is now forced to UTF-8, replacing characters a
+  stream cannot represent instead of raising.
+
+      $ PYTHONIOENCODING=ascii kanban-tui --db board.db --print 110x24
+      UnicodeEncodeError: 'ascii' codec can't encode character '\U0001f680'   # 1.0.1
+      exit=0                                                                  # 1.0.2
+
+- A board path is split on both `/` and `\` when deriving the board label, so a
+  board under `kanban/boards/<slug>/` is named correctly whichever separator the
+  path arrived with.
+- Tests read and write the golden frames as UTF-8, so a cp1252 default locale no
+  longer turns them into mojibake. 129 tests.
+- CI gains a `windows-latest` job: pip install, the curses shim, the fixture
+  board, every non-interactive mode, and the full suite.
+
 ## 1.0.1
 
 - Windows: a Python without `curses` no longer dies on import with a traceback.
