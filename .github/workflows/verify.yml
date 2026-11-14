@@ -73,3 +73,36 @@ jobs:
           mkdir -p tests && cp "$GITHUB_WORKSPACE"/tests/*.txt tests/
           ln -s $K/venv/lib/python*/site-packages/kanban_tui.py kanban_tui.py
           $K/venv/bin/python -m unittest test_kanban_tui
+
+  windows:
+    name: windows-latest, install from sdist
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: install the package the way a Windows user would
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install .
+
+      - name: pip brought in the curses shim
+        run: python -c "import curses; print('curses from', curses.__file__)"
+
+      - name: build a fixture board
+        run: |
+          python -c "import test_kanban_tui as t; t.build_fixture('board.db')"
+          python -c "import sqlite3; print('rows:', sqlite3.connect('board.db').execute('select count(*) from tasks').fetchone()[0])"
+
+      - name: the non-interactive modes work on Windows
+        run: |
+          kanban-tui --version
+          kanban-tui --db board.db --where
+          kanban-tui --db board.db --print 110x30
+          kanban-tui --db board.db --json
+          kanban-tui --db board.db --status blocked --print 90x20
+
+      - name: unit suite
+        run: python -m unittest test_kanban_tui
