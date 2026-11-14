@@ -30,7 +30,7 @@ import sys
 import time
 import unicodedata
 
-VERSION = "1.1.0"
+VERSION = "1.0.0"
 SOURCE_ID = "hermes-kanban-tui"
 
 STATUS_ORDER = (

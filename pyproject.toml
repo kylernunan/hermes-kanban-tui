@@ -28,7 +28,9 @@ dynamic = ["version"]
 kanban-tui = "kanban_tui:cli_main"
 
 [project.urls]
-Source = "https://github.com/REPLACE-ME/hermes-kanban-tui"
+Homepage = "https://github.com/kylernunan/hermes-kanban-tui"
+Source = "https://github.com/kylernunan/hermes-kanban-tui"
+Issues = "https://github.com/kylernunan/hermes-kanban-tui/issues"
 
 [tool.setuptools]
 # One module, no package tree: the install ships exactly the viewer.

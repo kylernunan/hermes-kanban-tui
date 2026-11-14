@@ -1,7 +1,11 @@
-# kanban-tui
+# hermes-kanban-tui
 
 A read-only terminal view of the Hermes Kanban board, built to run inside
-[herdr](https://herdr.dev) panes in Ghostty.
+[herdr](https://herdr.dev) panes in Ghostty. Install it as
+`hermes-kanban-tui`; the command it puts on your PATH is `kanban-tui`.
+
+Not affiliated with Nous Research. It reads the board their `hermes` CLI writes
+and never writes to it beyond the one comment action described below.
 
     kanban-tui                      # current board, status columns
     kanban-tui --all                # include done + archived history
@@ -26,7 +30,8 @@ No dependencies, one module. Pick whichever you already use:
 
 From a checkout, without installing anything:
 
-    git clone <repo> && cd hermes-kanban-tui
+    git clone https://github.com/kylernunan/hermes-kanban-tui
+    cd hermes-kanban-tui
     ./kanban-tui --where
 
 Requires Python 3.9+ with `curses` (present on Linux and macOS; Windows needs

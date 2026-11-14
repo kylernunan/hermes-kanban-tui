@@ -3,7 +3,9 @@
 Versions follow semver: a change to the JSON contract or the keyboard map is a
 minor bump, a read-only guarantee change would be major.
 
-## 1.1.0
+## 1.0.0
+
+First public release.
 
 - Board layout: status columns with proportional widths, detail strip beneath,
   list layout for narrow panes, `b` toggles.
