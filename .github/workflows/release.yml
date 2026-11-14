@@ -31,13 +31,24 @@ jobs:
         with:
           python-version: "3.14"
 
-      - name: the tag must match the module version
+      - name: the release tag must match the module version
         run: |
           set -euo pipefail
-          tag="${GITHUB_REF_NAME#v}"
           mod="$(python kanban_tui.py --version | awk '{print $3}')"
-          echo "tag=$tag module=$mod"
-          test "$tag" = "$mod" || { echo "tag and VERSION disagree; refusing to publish"; exit 1; }
+          case "$GITHUB_REF" in
+            refs/tags/*)
+              tag="${GITHUB_REF_NAME#v}"
+              echo "publishing from tag $tag, module $mod"
+              test "$tag" = "$mod" || { echo "tag and VERSION disagree; refusing to publish"; exit 1; }
+              ;;
+            *)
+              # Manual dispatch: the exact commit must already carry v<version>.
+              echo "publishing from dispatch, module $mod"
+              git fetch --tags --force
+              git tag --points-at HEAD | grep -qx "v$mod" \
+                || { echo "HEAD has no v$mod tag; refusing to publish"; exit 1; }
+              ;;
+          esac
 
       - name: suite must pass on the exact bytes being published
         run: python -m unittest test_kanban_tui

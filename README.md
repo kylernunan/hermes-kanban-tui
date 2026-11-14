@@ -4,6 +4,9 @@ A read-only terminal view of the Hermes Kanban board, built to run inside
 [herdr](https://herdr.dev) panes in Ghostty. Install it as
 `hermes-kanban-tui`; the command it puts on your PATH is `kanban-tui`.
 
+[![PyPI](https://img.shields.io/pypi/v/hermes-kanban-tui.svg)](https://pypi.org/project/hermes-kanban-tui/)
+[![python](https://img.shields.io/pypi/pyversions/hermes-kanban-tui.svg)](https://pypi.org/project/hermes-kanban-tui/)
+
 Not affiliated with Nous Research. It reads the board their `hermes` CLI writes
 and never writes to it beyond the one comment action described below.
 
