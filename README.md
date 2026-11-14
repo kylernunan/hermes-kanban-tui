@@ -20,8 +20,8 @@ and never writes to it beyond the one comment action described below.
     kanban-tui --mouse              # click to select, wheel to scroll
     kanban-tui --no-write           # disable the comment action
 
-Keyboard first, stdlib only, no build step. Read-only: it never writes to the
-board.
+Keyboard first, no build step, no dependency on Linux or macOS. Read-only: it
+never writes to the board.
 
 ## Install
 
@@ -37,8 +37,11 @@ From a checkout, without installing anything:
     cd hermes-kanban-tui
     ./kanban-tui --where
 
-Requires Python 3.10+ with `curses` (present on Linux and macOS; Windows needs
-`windows-curses`, and the pane-title and mouse features assume a Unix terminal).
+Requires Python 3.10+. `curses` ships with Python on Linux and macOS; on Windows
+pip pulls in `windows-curses` for you, and if it is ever missing the interactive
+view says so instead of crashing while `--print`, `--json` and `--where` keep
+working. The interactive view is only tested on Linux and macOS. The pane-title
+and mouse features assume a Unix terminal.
 It reads the board the Hermes CLI reads: `~/.hermes/kanban.db`, `HERMES_HOME`,
 `HERMES_KANBAN_HOME`, or `--db`, in that order of specificity. `--where` prints
 exactly what it resolved before you look at a blank screen.

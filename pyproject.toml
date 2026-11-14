@@ -25,7 +25,9 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Topic :: Software Development :: User Interfaces",
 ]
-dependencies = []
+# POSIX Pythons ship curses. Windows does not, so pip fetches the shim there; the
+# snapshot, JSON and --where modes work even if it is absent.
+dependencies = ["windows-curses>=2.3; sys_platform == 'win32'"]
 dynamic = ["version"]
 
 [project.scripts]

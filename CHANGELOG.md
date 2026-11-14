@@ -3,6 +3,14 @@
 Versions follow semver: a change to the JSON contract or the keyboard map is a
 minor bump, a read-only guarantee change would be major.
 
+## 1.0.1
+
+- Windows: a Python without `curses` no longer dies on import with a traceback.
+  `--print`, `--json`, `--where` and `--version` now work there, and the
+  interactive view explains itself instead of crashing. `windows-curses` is
+  declared for `sys_platform == 'win32'`, so pip installs it on Windows.
+  The Windows interactive path is untested; the graceful path is tested.
+
 ## 1.0.0
 
 First public release.

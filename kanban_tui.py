@@ -17,7 +17,6 @@ Standalone: stdlib only, no build step, no third-party dependency.
 from __future__ import annotations
 
 import argparse
-import curses
 import json
 import locale
 import os
@@ -30,7 +29,20 @@ import sys
 import time
 import unicodedata
 
-VERSION = "1.0.0"
+# Windows ships without curses. The snapshot and JSON modes do not need it, so a
+# missing module must not stop the import; only the interactive view requires it.
+try:
+    import curses
+except ImportError:  # pragma: no cover - exercised by stubbing, not on POSIX
+    curses = None  # type: ignore[assignment]
+
+NO_CURSES = (
+    "kanban-tui: this Python has no curses module, so the interactive view cannot run.\n"
+    "On Windows install it with:  pip install windows-curses\n"
+    "--print, --json, --where and --version work without curses."
+)
+
+VERSION = "1.0.1"
 SOURCE_ID = "hermes-kanban-tui"
 
 STATUS_ORDER = (
@@ -2028,6 +2040,9 @@ def paint(screen, frame):
 
 
 def run_interactive(app):
+    if curses is None:
+        sys.stderr.write(NO_CURSES + "\n")
+        return 1
     term, note = ensure_terminal()
     app.terminfo_note = note
     os.environ.setdefault("ESCDELAY", "25")

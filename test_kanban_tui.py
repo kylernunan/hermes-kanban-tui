@@ -1461,6 +1461,26 @@ class TestCli(FixtureCase):
         self.assertIn("--board crew", command)
         self.assertIn("exec bash -l", command)
 
+    def test_snapshot_modes_work_without_curses(self):
+        # Windows ships no curses; pip installs windows-curses, but if it is
+        # absent the read-only snapshot modes must still work.
+        out = io.StringIO()
+        with unittest.mock.patch.object(kt, "curses", None), \
+                unittest.mock.patch.object(kt.sys, "stdout", out):
+            code = kt.main(["--db", self.db, "--print", "100x20"])
+        self.assertEqual(code, 0)
+        self.assertIn("KANBAN", out.getvalue())
+
+    def test_interactive_without_curses_says_so(self):
+        err = io.StringIO()
+        with unittest.mock.patch.object(kt, "curses", None), \
+                unittest.mock.patch.object(kt.sys, "stderr", err):
+            code = kt.main(["--db", self.db])
+        self.assertEqual(code, 1)
+        message = err.getvalue()
+        self.assertIn("no curses module", message)
+        self.assertIn("pip install windows-curses", message)
+
     def test_bad_size_is_rejected(self):
         res = self.run_cli("--db", self.db, "--print", "wide")
         self.assertNotEqual(res.returncode, 0)
