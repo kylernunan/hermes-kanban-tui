@@ -1,0 +1,26 @@
+ KANBAN  default tri 0 tod 1 sch 1 rdy 1     read-only | 2s | HH:MM:SS
+ show open  status all  assignee all   5 listed
+----------------------------------------------------------------------
+ todo (1) ------------------------------------------------------------
+> t_emo00001 tod   1 intake        Unicode 🚀 wide chars 中文 and tabs
+ scheduled (1) -------------------------------------------------------
+  t_sch00001 sch   5 builder       Scheduled task
+ ready (1) -----------------------------------------------------------
+  t_rdy00001 rdy 100 reviewer      Ready task — with an em dash and a
+ running (1) ---------------------------------------------------------
+  t_run00001 run  80 builder-hard  Running worker with a long t  hb 5s
+ blocked (1) ---------------------------------------------------------
+  t_blk00001 blk   0 operator      Blocked task needing o  needs_input
+
+
+
+
+
+
+
+
+
+
+
+
+ list | Tab swaps list/detail  1-3 tab  z hide  b column view  ? help

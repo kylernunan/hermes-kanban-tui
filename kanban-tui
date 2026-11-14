@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# kanban-tui -- launch the read-only Hermes Kanban board view.
+#
+# Works standalone and inside a herdr pane. Inside herdr it also publishes the
+# board counts into the pane title, so the tab strip shows the crew state while
+# the pane is in the background.
+#
+#   kanban-tui                     open the current board
+#   kanban-tui --all               include done and archived history
+#   kanban-tui --board crew        open a named board
+#   kanban-tui --pane              open in a new herdr workspace (needs herdr)
+#   kanban-tui --where             print what it resolved and exit
+#
+# This script only finds kanban_tui.py and picks an interpreter; every flag is
+# implemented in the Python module, so an installed copy (`pipx install
+# hermes-kanban-tui`) behaves exactly the same.
+#
+# The view is read-only by design: mutations stay in `hermes kanban` so the
+# board and the dispatcher keep a single writer.
+set -euo pipefail
+
+# Resolve through symlinks so a ~/.local/bin link still finds kanban_tui.py.
+SELF="${BASH_SOURCE[0]}"
+while [[ -L "$SELF" ]]; do
+  target="$(readlink -- "$SELF")"
+  case "$target" in
+    /*) SELF="$target" ;;
+    *)  SELF="$(dirname -- "$SELF")/$target" ;;
+  esac
+done
+HERE="$(cd -- "$(dirname -- "$SELF")" && pwd)"
+APP="${KANBAN_TUI_APP:-${HERE}/kanban_tui.py}"
+PYTHON="${KANBAN_TUI_PYTHON:-python3}"
+
+if [[ ! -f "$APP" ]]; then
+  echo "kanban-tui: cannot find kanban_tui.py next to $0" >&2
+  exit 1
+fi
+
+case "${1:-}" in
+  -h|--help)
+    awk 'NR>1 { if ($0 !~ /^#/) exit; sub(/^# ?/, ""); print }' "${BASH_SOURCE[0]}"
+    exit 0
+    ;;
+esac
+
+exec "$PYTHON" "$APP" "$@"

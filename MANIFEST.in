@@ -1,0 +1,15 @@
+include LICENSE
+include README.md
+include CHANGELOG.md
+include DISTRIBUTING.md
+include pyproject.toml
+include .gitignore
+include verify.sh
+include install-terminfo.sh
+include pty_drive.py ansi_screen.py resize_probe.py refresh_probe.py mouse_probe.py
+include comment_probe.py herdr_mouse_probe.py
+include test_kanban_tui.py
+recursive-include tests *.txt
+recursive-include docs *.md *.txt
+recursive-include .github *.yml
+global-exclude __pycache__/* *.py[cod]

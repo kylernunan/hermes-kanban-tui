@@ -1,0 +1,40 @@
+ KANBAN  default tri 0 tod 8 sch 7 rdy 5 run 0 rev 1 blk 10                                                                read-only | 2s | 16:15:00
+ show open  status all  assignee all   31 listed
+----------------------------------------------------------------------------------------------------------------------------------------------------
+ triage 0        | todo 8                | scheduled 7          | ready 5             | running 0       | review 1        | blocked 10
+-----------------|-----------------------|----------------------|---------------------|-----------------|-----------------|-------------------------
+ (empty)         |>t_122da3f2 dep1       | t_6dfd43a9           | t_d257db9f          | (empty)         | t_3c7ce1ac      | t_6e06bc35 !cap  11d01h
+                 |  Captain goal: advance|  Scheduler release   |  Implement native   |                 |  Workbench:     |  Omni: integrated
+                 |  canonical Omni       |  prep: rebase        |  durable            |                 |  implement      |  offline release
+                 | t_746cf1b4 dep1       | t_a90c5018           |                     |                 |                 | t_e908e065 !block 7d17h
+                 |  Omni native Hermes   |  EbbMate watch P4:   | t_f6098c98          |                 |                 |  Package DNS Toolbox
+                 |  pilot v2 review:     |  Ella reply-back to  |  Build the shared   |                 |                 |  with local DMARC
+                 | t_d85681ea dep1       | t_7d8bd97b           |  Ebbwater theme and |                 |                 | t_c312765d !block
+                 |  Integration          |  Omni native Hermes  |                     |                 |                 |  EbbMate watch P5:
+                 |  acceptance:          |  pilot v2: clean     | t_4105c570          |                 |                 |  build, sign, install,
+                 | t_7545d222 dep5       | t_3490065f           |  Captain: consume   |                 |                 | t_e6891e32 !cap  20d04h
+                 |  HQ: adopt Astryx as  |  Audited simulator   |  ACS setup          |                 |                 |  Omni native Hermes
+                 |  first consumer       |  qualification with  |                     |                 |                 |  pilot: corrected
+                 | t_f67e13cd dep1       | t_ca06a25a           | t_68b60de0          |                 |                 | t_c4699f9c !need  9d16h
+                 |  Rebuild all eight HQ |  Captain: resume     |  Captain: scope and |                 |                 |  Fleet: correct
+                 |  sections with the    |  consent-marker      |  build the Omni link|                 |                 |  capability holds and
+                 | t_91b17b61 dep1       | t_3ed0be2e           |                     |                 |                 | t_d9dd665b !need  8d17h
+                 |  Review the HQ        |  Reconcile           | t_76e48891          |                 |                 |  Native Hermes harness
+                 |  candidate and prepare|  transferred Omni    |  Omni link: Captain |                 |                 |  provider for Company
+                 |                       |                      |  native -3          |                 |                 |
+----------------------------------------------------------------------------------------------------------------------------------------------------
+t_122da3f2  [todo]                                                                                                                          prio 110
+Captain goal: advance canonical Omni qualification to verified release decision
+
+assignee default                  created 2026-10-25 21:58  age 18d19h
+run #945 blocked            by default  elapsed 3m56s
+ body(41)  events(27)  comments(10)
+
+## Current board disposition — 2026-11-02 (Captain)
+
+Persistent Omni goal remains incomplete behind canonical producer. Worker unblock capability was
+resolved by main Captain; current shared owner-level hold is native evidence consent. Harness root
+t_113546da later completed a failed bind/test attempt with absent pinned interpreter (127), not
+ACCEPT.
+
+ h/l column  j/k card  Tab detail  b list  s status  a assignee  / search  d history  z detail  ? help  q quit

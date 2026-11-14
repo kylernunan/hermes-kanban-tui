@@ -1,0 +1,24 @@
+ KANBAN  default tri 0 tod 1 sch 1 rdy 1 run 1 rev 0 blk 1                 read-only | 2s | HH:MM:SS
+ show open  status all  assignee all   5 listed
+----------------------------------------------------------------------------------------------------
+ todo 1             | scheduled 1       | ready 1           | running 1         | blocked 1
+--------------------|-------------------|-------------------|-------------------|-------------------
+>t_emo00001 dep1    | t_sch00001        | t_rdy00001        | t_run00001 hb5s   | t_blk00001 !need
+  Unicode 🚀 wide   |  Scheduled task   |  Ready task — with|  Running worker   |  Blocked task
+  chars 中文 and    |                   |  an em dash and a |  with a long title|  needing owner
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+                    |                   |                   |                   |
+
+ h/l column  j/k card  Tab detail  b list  c comment  s status  a assignee  / search  d history  z d

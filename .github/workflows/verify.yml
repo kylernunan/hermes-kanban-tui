@@ -1,0 +1,79 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  suite:
+    name: python ${{ matrix.python }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        python: ["3.9", "3.11", "3.13", "3.14"]
+        exclude:
+          # 3.9 is not on every macOS runner image; Linux covers it.
+          - os: macos-latest
+            python: "3.9"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: unit suite
+        run: python -m unittest test_kanban_tui -v
+      - name: snapshot renders without a TTY
+        run: |
+          python kanban_tui.py --print 120x40 | head -5
+          python kanban_tui.py --version
+
+  wheel:
+    name: install the wheel in a clean venv
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - run: python -m pip install --upgrade pip setuptools build
+      - run: python -m build --wheel --sdist
+      - name: wheel carries the module and nothing else
+        run: |
+          python - <<'EOF'
+          import glob, zipfile
+          names = zipfile.ZipFile(glob.glob("dist/*.whl")[0]).namelist()
+          assert names[0] == "kanban_tui.py", names
+          print("\n".join(names))
+          EOF
+      - name: install into a clean venv and run it
+        run: |
+          set -euo pipefail
+          K=$RUNNER_TEMP/kt
+          mkdir -p $K/run
+          python -m venv $K/venv
+          $K/venv/bin/pip install --no-index --no-deps dist/*.whl
+          python - <<'EOF'
+          import os, sqlite3, sys
+          sys.path.insert(0, ".")
+          import test_kanban_tui as t
+          db = os.path.join(os.environ["RUNNER_TEMP"], "kt", "fixture.db")
+          t.build_fixture(db)
+          print("fixture rows:", sqlite3.connect(db).execute("select count(*) from tasks").fetchone()[0])
+          EOF
+          cd $K/run                      # not the source tree
+          $K/venv/bin/python -c "import kanban_tui, sys; p = kanban_tui.__file__; print(p); assert 'site-packages' in p, p"
+          $K/venv/bin/kanban-tui --db $K/fixture.db --where
+          $K/venv/bin/kanban-tui --db $K/fixture.db --print 120x40 | head -5
+          $K/venv/bin/kanban-tui --db $K/fixture.db --json | head -c 120
+      - name: suite against the installed bytes
+        run: |
+          set -euo pipefail
+          K=$RUNNER_TEMP/kt
+          cd $K
+          cp "$GITHUB_WORKSPACE"/test_kanban_tui.py "$GITHUB_WORKSPACE"/ansi_screen.py "$GITHUB_WORKSPACE"/pty_drive.py .
+          mkdir -p tests && cp "$GITHUB_WORKSPACE"/tests/*.txt tests/
+          ln -s $K/venv/lib/python*/site-packages/kanban_tui.py kanban_tui.py
+          $K/venv/bin/python -m unittest test_kanban_tui
