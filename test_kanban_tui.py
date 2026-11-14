@@ -296,8 +296,10 @@ class TestStore(FixtureCase):
         self.addCleanup(store.close)
         self.assertEqual(store.board_label, "default")
         alt = "/home/x/.hermes/kanban/boards/crew/kanban.db"
+        # An explicit --db path is used as given, but absolutised: on Windows a
+        # POSIX-looking path legitimately gains the current drive.
         self.assertEqual(
-            kt.KanbanStore._resolve_path(alt, None), alt
+            kt.KanbanStore._resolve_path(alt, None), os.path.abspath(alt)
         )
         store2 = kt.KanbanStore(alt) if os.path.exists(alt) else None
         if store2:
