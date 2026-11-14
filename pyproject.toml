@@ -8,7 +8,7 @@ description = "Read-only terminal board view for the Hermes Agent kanban"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
-authors = [{ name = "Kyler Nunan" }]
+authors = [{ name = "Ebbwater LLC" }]
 keywords = ["hermes", "kanban", "tui", "curses", "terminal", "agents"]
 classifiers = [
     "Development Status :: 4 - Beta",
